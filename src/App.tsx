@@ -22,6 +22,7 @@ const App: React.FC = () => {
 
       <div className="stats">
         <p>Total Orders Accepted: <strong>{getTotalOrders()}</strong></p>
+        <p>Initial Rate: <strong>{(index / getTotalOrders() * 100).toFixed(2)}%</strong></p>
         <p>Acceptance Rate: <strong>{(getAcceptanceRate() * 100).toFixed(2)}%</strong></p>
       </div>
     </div>
