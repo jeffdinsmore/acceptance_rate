@@ -25,6 +25,17 @@ const App: React.FC = () => {
         <p>Initial Rate: <strong>{(getTotalOrders() / index * 100).toFixed(2)}%</strong></p>
         <p>Acceptance Rate: <strong>{(getAcceptanceRate() * 100).toFixed(2)}%</strong></p>
       </div>
+      <div className="orders-grid">
+  {useOrderStore.getState().orders.map((val, i) => (
+    <div
+      key={i}
+      className={`order-cell ${i === index ? 'current' : ''}`}
+      title={`Index ${i}`}
+    >
+      {val}
+    </div>
+  ))}
+</div>
     </div>
   )
 }

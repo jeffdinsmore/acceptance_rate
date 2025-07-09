@@ -30,6 +30,7 @@ export const useOrderStore = create<OrderStore>()(
       },
       getAcceptanceRate: () => {
         const total = get().orders.reduce((a, b) => a + b, 0)
+        console.log("ORders", get().orders);
         return total / 100
       },
       getTotalOrders: () => get().orders.reduce((a, b) => a + b, 0),
