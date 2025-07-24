@@ -3,6 +3,7 @@ import React from "react";
 import { useOrderStore } from "./store";
 
 const App: React.FC = () => {
+  const today = new Date().toISOString().split("T")[0];
   const {
     index,
     filledOnce,
@@ -14,6 +15,7 @@ const App: React.FC = () => {
     endDay,
   } = useOrderStore();
 console.log("filled once", filledOnce, useOrderStore.getState());
+
   return (
     <div className="container">
       <h1>Order Tracker</h1>
@@ -53,6 +55,7 @@ console.log("filled once", filledOnce, useOrderStore.getState());
 
       <div className="daily-log">
         <h2>Daily Log</h2>
+        <p><strong>Todays Rate:</strong> {useOrderStore.getState().dailies.map(entry => (entry.date === today) ? entry.rate + "%": "")}</p>
         <ul>
           {dailies.map((entry, i) => (
             <li key={i}>
