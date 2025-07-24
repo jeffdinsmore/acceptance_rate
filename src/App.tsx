@@ -1,5 +1,5 @@
 // src/App.tsx
-import React from 'react'
+import React from "react";
 import { useOrderStore } from "./store";
 
 const App: React.FC = () => {
@@ -10,8 +10,10 @@ const App: React.FC = () => {
     declineOrder,
     getAcceptanceRate,
     getTotalOrders,
+    dailies,
+    endDay,
   } = useOrderStore();
-  console.log("filled once", filledOnce);
+console.log("filled once", filledOnce, useOrderStore.getState());
   return (
     <div className="container">
       <h1>Order Tracker</h1>
@@ -33,18 +35,36 @@ const App: React.FC = () => {
         </p>
         {!filledOnce && (
           <p>
-            Initial Rate:{" "}
+            Initial Rate: {" "}
             <strong>
               {(index > 0 ? (getTotalOrders() / index) * 100 : 0).toFixed(2)}%
             </strong>
           </p>
         )}
         <p>
-          Acceptance Rate:{" "}
+          Acceptance Rate: {" "}
           <strong>{(getAcceptanceRate() * 100).toFixed(2)}%</strong>
         </p>
       </div>
-      <div className="orders-grid">
+
+      <div>
+        <button onClick={endDay} className="daily">End Day</button>
+      </div>
+
+      <div className="daily-log">
+        <h2>Daily Log</h2>
+        <ul>
+          {dailies.map((entry, i) => (
+            <li key={i}>
+              {entry.date}: {entry.start ?? "-"} to {entry.end || "in progress"}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+/*<div className="orders-grid">
         {useOrderStore.getState().orders.map((val, i) => (
           <div
             key={i}
@@ -54,9 +74,5 @@ const App: React.FC = () => {
             {val}
           </div>
         ))}
-      </div>
-    </div>
-  );
-};
-
+      </div>*/
 export default App;

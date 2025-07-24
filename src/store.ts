@@ -2,20 +2,30 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+interface DailyEntry {
+  date: string;
+  start: number;
+  end?: number;
+}
+
 interface OrderStore {
-  orders: number[]
-  index: number
-  filledOnce: boolean
-  submitOrder: () => void
-  declineOrder: () => void
-  getAcceptanceRate: () => number
-  getTotalOrders: () => number
+  orders: number[];
+  dailies: DailyEntry[];
+  index: number;
+  filledOnce: boolean;
+  submitOrder: () => void;
+  declineOrder: () => void;
+  getAcceptanceRate: () => number;
+  getTotalOrders: () => number;
+  startNewDay: () => void;
+  endDay: () => void;
 }
 
 export const useOrderStore = create<OrderStore>()(
   persist(
     (set, get) => ({
       orders: Array(100).fill(0),
+      dailies: [],
       index: 0,
       filledOnce: false,
 
@@ -37,14 +47,38 @@ export const useOrderStore = create<OrderStore>()(
 
       getAcceptanceRate: () => {
         const total = get().orders.reduce((a, b) => a + b, 0)
-        console.log("ORders", get().orders);
         return total / 100
       },
 
       getTotalOrders: () => get().orders.reduce((a, b) => a + b, 0),
+
+      startNewDay: () => {
+        const state = get();
+        const today = new Date().toISOString().split("T")[0];
+
+        const alreadyExists = state.dailies.some(entry => entry.date === today);
+        if (!alreadyExists) {
+          const newEntry: DailyEntry = { date: today, start: state.index };
+          const updated = [...state.dailies, newEntry].slice(-28); // cap at 28 entries
+          set({ dailies: updated });
+        }
+      },
+
+      endDay: () => {
+        const state = get();
+        const today = new Date().toISOString().split("T")[0];
+
+        const updated = state.dailies.map(entry =>
+          entry.date === today ? { ...entry, end: state.index } : entry
+        );
+        set({ dailies: updated });
+      },
     }),
     {
       name: 'order-storage',
     }
   )
 )
+
+// Automatically start a new day on app load
+useOrderStore.getState().startNewDay();

@@ -8,3 +8,4 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 )
+//console.log("filled once", filledOnce, useOrderStore.getState());
