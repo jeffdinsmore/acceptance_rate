@@ -176,27 +176,3 @@ button.day-buttons:hover {
     background-color: #f9f9f9;
   }
 }
-
-@media (max-width: 420px) {
-  h1 {
-    font-size: 1.3rem;
-  }
-
-  button {
-    font-size: 0.9rem;
-    padding: 0.6rem;
-  }
-
-  .order-cell {
-    font-size: 0.7rem;
-    padding: 0.4rem;
-  }
-
-  .orders-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  .container {
-    padding: 1rem;
-  }
-}
