@@ -61,6 +61,17 @@ console.log("filled once", filledOnce, useOrderStore.getState());
           ))}
         </ul>
       </div>
+      <div className="orders-grid">
+        {useOrderStore.getState().orders.map((val, i) => (
+          <div
+            key={i}
+            className={`order-cell ${i === index ? "current" : ""}`}
+            title={`Index ${i}`}
+          >
+            {val}
+          </div>
+        ))}
+      </div>*/
     </div>
   );
 };

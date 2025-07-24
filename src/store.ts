@@ -69,7 +69,7 @@ export const useOrderStore = create<OrderStore>()(
         const today = new Date().toISOString().split("T")[0];
 
         const updated = state.dailies.map(entry =>
-          entry.date === today ? { ...entry, end: state.index } : entry
+          entry.date === today ? { ...entry, end: state.index - 1 } : entry
         );
         set({ dailies: updated });
       },
