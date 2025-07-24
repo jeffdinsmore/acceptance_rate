@@ -177,7 +177,7 @@ button.day-buttons:hover {
   }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 420px) {
   h1 {
     font-size: 1.3rem;
   }
