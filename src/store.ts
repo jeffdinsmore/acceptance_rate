@@ -14,6 +14,7 @@ interface OrderStore {
   dailies: DailyEntry[];
   index: number;
   filledOnce: boolean;
+  isAlreadyStarted: () => boolean;
   submitOrder: () => void;
   declineOrder: () => void;
   getAcceptanceRate: () => number;
@@ -32,6 +33,13 @@ export const useOrderStore = create<OrderStore>()(
       filledOnce: false,
       
       submitOrder: () => {
+        if(!get().isAlreadyStarted()) {
+          get().startNewDay();
+          console.log("Today has been set");
+        }
+        /*const daily = get().dailies.slice(0,1);
+        console.log("daily", daily);
+        set({ dailies: daily });*/
         const newOrders = [...get().orders]
         const currentIndex = get().index % 100
         const nextIndex = (currentIndex + 1) % 100
@@ -40,6 +48,12 @@ export const useOrderStore = create<OrderStore>()(
       },
 
       declineOrder: () => {
+
+        if (!get().isAlreadyStarted()) {
+          get().startNewDay(); // only trigger on first action of the day
+          console.log("Today has been set");
+        }
+
         const newOrders = [...get().orders]
         const currentIndex = get().index % 100
         const nextIndex = (currentIndex + 1) % 100
@@ -78,12 +92,19 @@ export const useOrderStore = create<OrderStore>()(
         }
       },
 
+      isAlreadyStarted: () => {
+        const state = get();
+        const today = new Date().toLocaleDateString('en-CA');
+        const alreadyStarted = state.dailies.some(entry => entry.date === today);
+        return alreadyStarted;
+      },
+
       endDay: () => {
         const state = get();
         const today = new Date().toLocaleDateString('en-CA').split("T")[0];
 
         const updated = state.dailies.map(entry =>
-          entry.date === today ? { ...entry, end: state.index - 1, rate: get().getTodaysRate(Number(entry.start), state.index - 1)} : entry
+          entry.date === today ? { ...entry, end: state.index - 1, rate: get().getTodaysRate(Number(entry.start), state.index - 1) ? get().getTodaysRate(Number(entry.start), state.index - 1) : 0} : entry
         );
         set({ dailies: updated });
       },
@@ -95,4 +116,4 @@ export const useOrderStore = create<OrderStore>()(
 )
 
 // Automatically start a new day on app load
-useOrderStore.getState().startNewDay();
+
