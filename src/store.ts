@@ -54,14 +54,12 @@ export const useOrderStore = create<OrderStore>()(
 
       getTodaysRate: (startIndex: number, endIndex: number) => {
         const state = get();
-        //const today = new Date().toString().split("T")[0];
+
         let total = 0;
         for(let i = startIndex; i < endIndex; i++){
           total = total + state.orders[i];
         }
-        //const total = get().orders.map(order => order[] += );
-        /*const total = state.dailies.map(entry =>
-          entry.date === today ?  state.index - 1 - entry.start : entry);*/
+
         const rate = parseFloat((total / (state.index - startIndex) * 100).toFixed(1));
         return rate;
       },
@@ -70,7 +68,7 @@ export const useOrderStore = create<OrderStore>()(
 
       startNewDay: () => {
         const state = get();
-        const today = new Date().toISOString().split("T")[0];
+        const today = new Date().toLocaleDateString('en-CA').split("T")[0];
 
         const alreadyExists = state.dailies.some(entry => entry.date === today);
         if (!alreadyExists) {
@@ -82,7 +80,7 @@ export const useOrderStore = create<OrderStore>()(
 
       endDay: () => {
         const state = get();
-        const today = new Date().toISOString().split("T")[0];
+        const today = new Date().toLocaleDateString('en-CA').split("T")[0];
 
         const updated = state.dailies.map(entry =>
           entry.date === today ? { ...entry, end: state.index - 1, rate: get().getTodaysRate(Number(entry.start), state.index - 1)} : entry
