@@ -20,6 +20,7 @@ interface OrderStore {
   getAcceptanceRate: () => number;
   getTotalOrders: () => number;
   startNewDay: () => void;
+  updateRate: () => void;
   endDay: () => void;
   getTodaysRate: (startIndex: number, endIndex: number) => number;
 }
@@ -45,6 +46,7 @@ export const useOrderStore = create<OrderStore>()(
         const nextIndex = (currentIndex + 1) % 100
         newOrders[currentIndex] = 1
         set({ orders: newOrders, index: nextIndex, filledOnce: get().filledOnce || nextIndex === 0, })
+        get().updateRate();
       },
 
       declineOrder: () => {
@@ -59,6 +61,7 @@ export const useOrderStore = create<OrderStore>()(
         const nextIndex = (currentIndex + 1) % 100
         newOrders[currentIndex] = 0
         set({ orders: newOrders, index: nextIndex, filledOnce: get().filledOnce || nextIndex === 0, })
+        get().updateRate();
       },
 
       getAcceptanceRate: () => {
@@ -97,6 +100,16 @@ export const useOrderStore = create<OrderStore>()(
         const today = new Date().toLocaleDateString('en-CA');
         const alreadyStarted = state.dailies.some(entry => entry.date === today);
         return alreadyStarted;
+      },
+
+      updateRate: () => {
+        const state = get();
+        const today = new Date().toLocaleDateString('en-CA').split("T")[0];
+
+        const updated = state.dailies.map(entry =>
+          entry.date === today ? { ...entry, rate: get().getTodaysRate(Number(entry.start), state.index - 1)} : entry
+        );
+        set({ dailies: updated });
       },
 
       endDay: () => {
