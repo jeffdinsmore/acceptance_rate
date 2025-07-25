@@ -74,7 +74,7 @@ export const useOrderStore = create<OrderStore>()(
           total = total + state.orders[i];
         }
 
-        const rate = parseFloat((total / (state.index - startIndex) * 100).toFixed(1));
+        const rate = (state.index - startIndex) !== 0 ? parseFloat((total / (state.index - startIndex) * 100).toFixed(1)) : 0;
         return rate;
       },
       
@@ -104,7 +104,7 @@ export const useOrderStore = create<OrderStore>()(
         const today = new Date().toLocaleDateString('en-CA').split("T")[0];
 
         const updated = state.dailies.map(entry =>
-          entry.date === today ? { ...entry, end: state.index - 1, rate: get().getTodaysRate(Number(entry.start), state.index - 1) ? get().getTodaysRate(Number(entry.start), state.index - 1) : 0} : entry
+          entry.date === today ? { ...entry, end: state.index - 1, rate: get().getTodaysRate(Number(entry.start), state.index - 1)} : entry
         );
         set({ dailies: updated });
       },
