@@ -57,7 +57,7 @@ console.log("filled once", filledOnce, useOrderStore.getState(), [...my, "5"].sl
 
       <div className="daily-log">
         <h2>Daily Log</h2>
-        <p><strong>Todays Rate:</strong> {todaysEntry && todaysEntry.rate + "%"}</p>
+        <p><strong>Todays Rate:</strong> {todaysEntry && todaysEntry.rate && todaysEntry.rate + "%"}</p>
         <ul>
           {dailies.map((entry, i) => (
             <li key={i}>
