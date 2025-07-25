@@ -77,7 +77,7 @@ export const useOrderStore = create<OrderStore>()(
           total = total + state.orders[i];
         }
 
-        const rate = (state.index - startIndex) !== 0 ? parseFloat((total / (state.index - startIndex) * 100).toFixed(1)) : 0;
+        const rate = (endIndex - startIndex) !== 0 ? parseFloat((total / (endIndex - startIndex) * 100).toFixed(1)) : 0;
         return rate;
       },
       

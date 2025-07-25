@@ -15,8 +15,8 @@ const App: React.FC = () => {
     dailies,
     endDay,
   } = useOrderStore();
-  const my = ["label", "store", "1", "2", "3", "4", "labels"];
-console.log("filled once", filledOnce, useOrderStore.getState(), [...my, "5"].slice(0,1));
+  
+console.log("filled once", filledOnce);
 
   return (
     <div className="container">
