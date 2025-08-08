@@ -15,6 +15,7 @@ const App: React.FC = () => {
     dailies,
     endDay,
   } = useOrderStore();
+  localStorage.removeItem("order-storage");
   let store = useOrderStore.getState();
   let daily = store.dailies;
 console.log("filled once", filledOnce, useOrderStore.getState(), daily, daily.map(entry =>

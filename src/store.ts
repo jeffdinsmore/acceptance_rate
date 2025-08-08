@@ -42,7 +42,7 @@ export const useOrderStore = create<OrderStore>()(
 
         if (
           state.dailies.length > 0 &&
-          state.dailies[state.dailies.length - 1].date !== today &&
+          state.dailies[state.dailies.length - 1].date === today &&
           get().checkEnd()
         ) {
           get().fixLastDate();
@@ -72,7 +72,7 @@ export const useOrderStore = create<OrderStore>()(
         console.log("decline order");
         if (
           state.dailies.length > 0 &&
-          state.dailies[state.dailies.length - 1].date !== today &&
+          state.dailies[state.dailies.length - 1].date === today &&
           get().checkEnd()
         ) {
           get().fixLastDate();
@@ -118,7 +118,7 @@ export const useOrderStore = create<OrderStore>()(
 
       startNewDay: () => {
         const state = get();
-        const today = new Date()
+        const today = new Date("2025-08-07")
           .toLocaleDateString("en-CA")
           .split("T")[0];
         console.log("start new day", today);
@@ -134,7 +134,7 @@ export const useOrderStore = create<OrderStore>()(
 
       isAlreadyStarted: () => {
         const state = get();
-        const today = new Date().toLocaleDateString("en-CA");
+        const today = new Date("2025-08-07").toLocaleDateString("en-CA");
 
         const alreadyStarted = state.dailies.some(
           (entry) => entry.date === today
@@ -146,13 +146,13 @@ export const useOrderStore = create<OrderStore>()(
       updateRate: () => {
         const state = get();
         console.log("updateRate");
-        const today = new Date().toLocaleDateString("en-CA").split("T")[0];
+        const today = new Date("2025-08-07").toLocaleDateString("en-CA").split("T")[0];
 
         const updated = state.dailies.map((entry) =>
           entry.date === today
             ? {
                 ...entry,
-                rate: get().getTodaysRate(Number(entry.start), state.index - 1),
+                rate: get().getTodaysRate(Number(entry.start), Number(state.index)),
               }
             : entry
         );
@@ -164,14 +164,14 @@ export const useOrderStore = create<OrderStore>()(
         if (!get().isAlreadyStarted && get().checkEnd()) {
           get().fixLastDate();
         }
-        const today = new Date().toLocaleDateString("en-CA").split("T")[0];
+        const today = new Date("2025-08-07").toLocaleDateString("en-CA").split("T")[0];
 
         const updated = state.dailies.map((entry) =>
           entry.date === today
             ? {
                 ...entry,
                 end: state.index - 1,
-                rate: get().getTodaysRate(Number(entry.start), state.index - 1),
+                rate: get().getTodaysRate(Number(entry.start), Number(state.index)),
               }
             : entry
         );
@@ -205,7 +205,7 @@ export const useOrderStore = create<OrderStore>()(
             ? {
                 ...entry,
                 end: state.index-1,
-                rate: get().getTodaysRate(Number(entry.start), state.index),
+                rate: get().getTodaysRate(Number(entry.start), Number(state.index)),
               }
             : entry
         );
