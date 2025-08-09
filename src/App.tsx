@@ -3,8 +3,10 @@ import React from "react";
 import { useOrderStore } from "./store";
 
 const App: React.FC = () => {
-  const today = new Date().toLocaleDateString('en-CA').split("T")[0];
-  const todaysEntry = useOrderStore.getState().dailies.find(entry => entry.date === today);
+  const today = new Date().toLocaleDateString("en-CA").split("T")[0];
+  const todaysEntry = useOrderStore
+    .getState()
+    .dailies.find((entry) => entry.date === today);
   const {
     index,
     filledOnce,
@@ -18,9 +20,11 @@ const App: React.FC = () => {
   //localStorage.removeItem("order-storage");
   let store = useOrderStore.getState();
   let daily = store.dailies;
-console.log("filled once", filledOnce, useOrderStore.getState(), daily, daily.map(entry =>
-          entry.end ? "true": "false"
-        ));
+  console.log(
+    "filled once",
+    filledOnce,
+    useOrderStore.getState(),
+    daily);
 
   return (
     <div className="container">
@@ -43,25 +47,30 @@ console.log("filled once", filledOnce, useOrderStore.getState(), daily, daily.ma
         </p>
         {!filledOnce && (
           <p>
-            Initial Rate: {" "}
+            Initial Rate:{" "}
             <strong>
               {(index > 0 ? (getTotalOrders() / index) * 100 : 0).toFixed(2)}%
             </strong>
           </p>
         )}
         <p>
-          Acceptance Rate: {" "}
+          Acceptance Rate:{" "}
           <strong>{(getAcceptanceRate() * 100).toFixed(2)}%</strong>
         </p>
       </div>
 
       <div>
-        <button onClick={endDay} className="daily">End Day</button>
+        <button onClick={endDay} className="daily">
+          End Day
+        </button>
       </div>
 
       <div className="daily-log">
         <h2>Daily Log</h2>
-        <p><strong>Todays Rate:</strong> {todaysEntry && todaysEntry.rate ? todaysEntry.rate + "%" : "0%"}</p>
+        <p>
+          <strong>Todays Rate:</strong>{" "}
+          {todaysEntry && todaysEntry.rate ? todaysEntry.rate + "%" : "0%"}
+        </p>
         <ul>
           {dailies.map((entry, i) => (
             <li key={i}>
@@ -80,7 +89,7 @@ console.log("filled once", filledOnce, useOrderStore.getState(), daily, daily.ma
             {val}
           </div>
         ))}
-      </div>*/
+      </div>
     </div>
   );
 };
