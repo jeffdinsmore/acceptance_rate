@@ -20,11 +20,7 @@ const App: React.FC = () => {
   //localStorage.removeItem("order-storage");
   let store = useOrderStore.getState();
   let daily = store.dailies;
-  console.log(
-    "filled once",
-    filledOnce,
-    useOrderStore.getState(),
-    daily);
+  console.log("filled once", filledOnce, useOrderStore.getState(), daily);
 
   return (
     <div className="container">
@@ -43,6 +39,10 @@ const App: React.FC = () => {
 
       <div className="stats">
         <p>
+          <strong>Todays Rate:</strong>{" "}
+          {todaysEntry && todaysEntry.rate ? todaysEntry.rate + "%" : "0%"}
+        </p>
+        <p>
           Total Orders Accepted: <strong>{getTotalOrders()}</strong>
         </p>
         {!filledOnce && (
@@ -53,10 +53,11 @@ const App: React.FC = () => {
             </strong>
           </p>
         )}
-        <p>
+        {filledOnce &&<p>
           Acceptance Rate:{" "}
           <strong>{(getAcceptanceRate() * 100).toFixed(2)}%</strong>
         </p>
+        }
       </div>
 
       <div>
@@ -67,16 +68,16 @@ const App: React.FC = () => {
 
       <div className="daily-log">
         <h2>Daily Log</h2>
-        <p>
-          <strong>Todays Rate:</strong>{" "}
-          {todaysEntry && todaysEntry.rate ? todaysEntry.rate + "%" : "0%"}
-        </p>
         <ul>
-          {dailies.map((entry, i) => (
-            <li key={i}>
-              {entry.date}: {entry.start ?? "-"} to {entry.end || "in progress"}
-            </li>
-          ))}
+          {dailies
+            .slice()
+            .reverse()
+            .map((entry, i) => (
+              <li key={i}>
+                {entry.date}: {entry.start ?? "-"} to{" "}
+                {entry.end || "in progress"}
+              </li>
+            ))}
         </ul>
       </div>
       <div className="orders-grid">
