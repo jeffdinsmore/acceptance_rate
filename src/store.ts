@@ -15,6 +15,8 @@ interface OrderStore {
   index: number;
   filledOnce: boolean;
   arraySize: number;
+  lastAccept: number;
+  lastDecline: number;
   isAlreadyStarted: () => boolean;
   submitOrder: () => void;
   declineOrder: () => void;
@@ -36,17 +38,19 @@ export const useOrderStore = create<OrderStore>()(
       dailies: [],
       index: 0,
       filledOnce: false,
+      lastAccept: 0,
+      lastDecline: 0,
 
       submitOrder: () => {
         const state = get();
-        const today = new Date()
-          .toLocaleDateString("en-CA")
-          .split("T")[0];
+        const today = new Date();
+          
         console.log("submit order", state.dailies.length > 0);
 
         if (
           state.dailies.length > 0 &&
-          state.dailies[state.dailies.length - 1].date !== today &&
+          state.dailies[state.dailies.length - 1].date !== today.toLocaleDateString("en-CA")
+          .split("T")[0] &&
           get().checkEnd()
         ) {
           get().fixLastDate();
@@ -67,19 +71,19 @@ export const useOrderStore = create<OrderStore>()(
           orders: newOrders,
           index: nextIndex,
           filledOnce: state.filledOnce || nextIndex === 0,
+          lastAccept: today.getTime(), 
         });
         get().updateRate();
       },
 
       declineOrder: () => {
         const state = get();
-        const today = new Date()
-          .toLocaleDateString("en-CA")
-          .split("T")[0];
+        const today = new Date();
         console.log("decline order");
         if (
           state.dailies.length > 0 &&
-          state.dailies[state.dailies.length - 1].date !== today &&
+          state.dailies[state.dailies.length - 1].date !== today.toLocaleDateString("en-CA")
+          .split("T")[0] &&
           get().checkEnd()
         ) {
           get().fixLastDate();
@@ -97,6 +101,7 @@ export const useOrderStore = create<OrderStore>()(
           orders: newOrders,
           index: nextIndex,
           filledOnce: state.filledOnce || nextIndex === 0,
+          lastDecline: today.getTime(),
         });
         get().updateRate();
       },

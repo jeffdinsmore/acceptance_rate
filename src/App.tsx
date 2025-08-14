@@ -1,6 +1,7 @@
 // src/App.tsx
 import React from "react";
 import { useOrderStore } from "./store";
+import time12Compact from "./helper";
 
 const App: React.FC = () => {
   const today = new Date().toLocaleDateString("en-CA").split("T")[0];
@@ -16,6 +17,8 @@ const App: React.FC = () => {
     getTotalOrders,
     dailies,
     endDay,
+    lastAccept,
+    lastDecline,
   } = useOrderStore();
   //localStorage.removeItem("order-storage");
   let store = useOrderStore.getState();
@@ -33,6 +36,7 @@ const App: React.FC = () => {
       <button onClick={submitOrder} className="accept">
         Accept Order
       </button>
+      {lastAccept !==0 && (<p><strong>Acc:</strong> {time12Compact(lastAccept)} <strong>Dec: </strong>{lastDecline !== 0 ? time12Compact(lastDecline) : ""}</p>)}
       <button className="decline" onClick={declineOrder}>
         Decline Order
       </button>
