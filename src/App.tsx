@@ -36,7 +36,7 @@ const App: React.FC = () => {
       <button onClick={submitOrder} className="accept">
         Accept Order
       </button>
-      {lastAccept !==0 && (<p><strong>Acc:</strong> {time12Compact(lastAccept)} <strong>Dec: </strong>{lastDecline !== 0 ? time12Compact(lastDecline) : ""}</p>)}
+      {lastAccept !==0 && (<p><strong>Acc:</strong> {time12Compact(lastAccept)} <strong>Dec: </strong>{lastDecline !== 0 ? time12Compact(lastDecline) : "N/A"}</p>)}
       <button className="decline" onClick={declineOrder}>
         Decline Order
       </button>

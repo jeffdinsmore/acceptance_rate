@@ -200,7 +200,7 @@ export const useOrderStore = create<OrderStore>()(
           entry.date === today
             ? {
                 ...entry,
-                end: state.index - 1,
+                end: state.index === 0 ? 99 : state.index - 1,
                 rate: get().getTodaysRate(
                   Number(entry.start),
                   Number(state.index === 0 ? 99 : state.index - 1)
