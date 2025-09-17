@@ -133,7 +133,7 @@ export const useOrderStore = create<OrderStore>()(
           i = (i + 1) % size;
         }
         //console.log("Total, j, i", total, j, i);
-        const rate = parseFloat(((total / j) * 100).toFixed(1));
+        const rate = Number(((total / j) * 100).toFixed(1));
         return rate;
       },
 
