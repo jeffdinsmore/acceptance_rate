@@ -36,7 +36,13 @@ const App: React.FC = () => {
       <button onClick={submitOrder} className="accept">
         Accept Order
       </button>
-      {lastAccept !==0 && (<p><strong>Acc:</strong> {time12Compact(lastAccept)} <strong>Dec: </strong>{lastDecline !== 0 ? time12Compact(lastDecline) : "N/A"}</p>)}
+      {lastAccept !== 0 && (
+        <p>
+          <strong>Acc:</strong> {time12Compact(lastAccept)}{" "}
+          <strong>Dec: </strong>
+          {lastDecline !== 0 ? time12Compact(lastDecline) : "N/A"}
+        </p>
+      )}
       <button className="decline" onClick={declineOrder}>
         Decline Order
       </button>
@@ -57,11 +63,12 @@ const App: React.FC = () => {
             </strong>
           </p>
         )}
-        {filledOnce &&<p>
-          Acceptance Rate:{" "}
-          <strong>{(getAcceptanceRate() * 100).toFixed(2)}%</strong>
-        </p>
-        }
+        {filledOnce && (
+          <p>
+            Acceptance Rate:{" "}
+            <strong>{(getAcceptanceRate() * 100).toFixed(2)}%</strong>
+          </p>
+        )}
       </div>
 
       <div>
@@ -80,6 +87,7 @@ const App: React.FC = () => {
               <li key={i}>
                 {entry.date}: {entry.start ?? "-"} to{" "}
                 {entry.end || "in progress"}
+                {entry.end && " - " + entry.rate + "%"}
               </li>
             ))}
         </ul>
